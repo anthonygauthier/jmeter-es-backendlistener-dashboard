@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { ESUtils } from './elasticsearch-util';
 import { Chart } from "react-google-charts";
-// import { DateTime } from 'react-datetime'
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import Grid from '@material-ui/core/Grid';
 import './App.css';
 
 class App extends Component {
@@ -25,7 +27,7 @@ class App extends Component {
   }
 
   generateLinearDataSource(esData) {
-    let array = [["x"]];
+    let array = [["Percentiles"]];
 
     for(let i=0; i < esData.aggregations.transaction.buckets.length; i++) {
       array[0].push(esData.aggregations.transaction.buckets[i].key)
@@ -49,9 +51,11 @@ class App extends Component {
         const percentile = transaction.percentiles.values[j];
         if(j===0)
           array.push([transaction.key]);
-        if(i===0)
+        if(i===0 && percentile.key % 5 === 0)
           array[0].push({type: 'number', label: percentile.key});
-        array[i+1].push(percentile.value)
+        // to aleviate the table
+        if(percentile.key % 5 === 0)
+          array[i+1].push(percentile.value)
       }
     }
     return array;
@@ -87,47 +91,61 @@ class App extends Component {
       <div className="App">
         <div id="forms"> 
           <form onSubmit={this.handleSubmit}>
-            <Input type="text" label="ElasticSearch Host" name="esHost" placeholder="localhost" onChange={this.handleChange} />
-            <Input type="number" name="esPort" onChange={this.handleChange} placeholder="9200" />
-            <TextField
-              name="timeFrom"
-              label="Time from"
-              type="datetime-local"
-              onChange={this.handleChange}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <TextField
-              name="timeTo"
-              label="Time to"
-              type="datetime-local"
-              onChange={this.handleChange}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            
-            <Input type="text" name="index" onChange={this.handleChange} placeholder="index" />
+            <Grid container direction="row" alignItems="center">
+              <Grid item xs={6}>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">ElasticSearch Config</FormLabel>
+                  <Input className="input" type="text" label="ElasticSearch Host" name="esHost" placeholder="localhost" onChange={this.handleChange} />
+                  <Input type="number" name="esPort" onChange={this.handleChange} placeholder="9200" />
+                  <Input type="text" name="index" onChange={this.handleChange} placeholder="index" />
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Time</FormLabel>
+                  <TextField
+                    name="timeFrom"
+                    label="From"
+                    type="datetime-local"
+                    onChange={this.handleChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                  <TextField
+                    name="timeTo"
+                    label="To"
+                    type="datetime-local"
+                    onChange={this.handleChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </FormControl> 
+              </Grid>
+            </Grid>
             <Button type="submit" variant="contained" color="primary">Submit</Button>
           </form>
         </div>
         <div id="charts">
           <Chart
-            chartType="LineChart"
+            chartType="Line"
+            width={'100%'}
+            height={'500px'}
             loader={<div>Loading percentile distribution...</div>}
             data={this.state.linearDataSource}
             options={{
-              chartArea: {
-                width: '80%',
-              },
               hAxis: {
                 title: 'Percentile',
               },
               vAxis: {
-                title: 'Response time in milliseconds (ms)',
+                title: 'Response time',
               },
-              title: `Response time percentile distribution for ${this.state.index}`,
+              chart: {
+                title: `Response time percentile distribution for ${this.state.index}`,
+                subtitle: 'Time is in milliseconds (ms)',
+              },
+              
             }}
           />
           <Chart
