@@ -26,7 +26,7 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  generateLinearDataSource(esData) {
+  generatePercentileLinearDataSource(esData) {
     let array = [["Percentiles"]];
 
     for(let i=0; i < esData.aggregations.transaction.buckets.length; i++) {
@@ -42,7 +42,7 @@ class App extends Component {
     return array;
   }
 
-  generateTableDataSource(esData) {
+  generatePercentileTableDataSource(esData) {
     let array = [[{type: 'string', label: 'Transaction'}]];
     
     for(let i=0; i < esData.aggregations.transaction.buckets.length; i++) {
@@ -76,8 +76,8 @@ class App extends Component {
     try {
       if(await es.checkConnectivity()) {
         const response = await es.getPercentiles(this.state.index, new Date(this.state.timeFrom).getTime(), new Date(this.state.timeTo).getTime());
-        this.handleDataSource('linearDataSource', this.generateLinearDataSource(response));
-        this.handleDataSource('tableDataSource', this.generateTableDataSource(response));
+        this.handleDataSource('linearDataSource', this.generatePercentileLinearDataSource(response));
+        this.handleDataSource('tableDataSource', this.generatePercentileTableDataSource(response));
       }
     } catch (e) {
       console.trace(e);
