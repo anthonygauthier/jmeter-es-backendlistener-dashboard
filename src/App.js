@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { ESUtils } from './elasticsearch-util';
 import { Chart } from "react-google-charts";
-import { DateTime } from 'react-datetime'
+// import { DateTime } from 'react-datetime'
+import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import './App.css';
 
 class App extends Component {
@@ -68,7 +71,7 @@ class App extends Component {
 
     try {
       if(await es.checkConnectivity()) {
-        const response = await es.getPercentiles(this.state.index, this.state.timeFrom * 1000, this.state.timeTo * 1000);
+        const response = await es.getPercentiles(this.state.index, new Date(this.state.timeFrom).getTime(), new Date(this.state.timeTo).getTime());
         this.handleDataSource('linearDataSource', this.generateLinearDataSource(response));
         this.handleDataSource('tableDataSource', this.generateTableDataSource(response));
       }
@@ -84,12 +87,29 @@ class App extends Component {
       <div className="App">
         <div id="forms"> 
           <form onSubmit={this.handleSubmit}>
-            <input type="text" name="esHost" onChange={this.handleChange} placeholder="localhost" />
-            <input type="number" name="esPort" onChange={this.handleChange} placeholder="9200" />
-            <input type="number" name="timeFrom" onChange={this.handleChange} placeholder="from" />
-            <input type="number" name="timeTo" onChange={this.handleChange} placeholder="to" />
-            <input type="text" name="index" onChange={this.handleChange} placeholder="index" />
-            <input type="submit" />
+            <Input type="text" label="ElasticSearch Host" name="esHost" placeholder="localhost" onChange={this.handleChange} />
+            <Input type="number" name="esPort" onChange={this.handleChange} placeholder="9200" />
+            <TextField
+              name="timeFrom"
+              label="Time from"
+              type="datetime-local"
+              onChange={this.handleChange}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              name="timeTo"
+              label="Time to"
+              type="datetime-local"
+              onChange={this.handleChange}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            
+            <Input type="text" name="index" onChange={this.handleChange} placeholder="index" />
+            <Button type="submit" variant="contained" color="primary">Submit</Button>
           </form>
         </div>
         <div id="charts">

@@ -10,6 +10,7 @@ export class ESUtils {
   }
 
   async getPercentiles(index, timeFrom, timeTo) {
+    console.log(timeFrom, timeTo);
     const response = await this.client.search({
       index: index,
       body: {
@@ -39,8 +40,8 @@ export class ESUtils {
             must: [{
               range: {
                 Timestamp: {
-                  gte: timeFrom * 1000,
-                  lte: timeTo * 1000,
+                  gte: timeFrom,
+                  lte: timeTo,
                   format: "epoch_millis"
                 }
               }
