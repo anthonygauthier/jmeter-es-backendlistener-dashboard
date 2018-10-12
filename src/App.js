@@ -129,7 +129,7 @@ class App extends Component {
         </div>
         <div id="charts">
           <Chart
-            chartType="Chart"
+            chartType="Line"
             width={'100%'}
             height={'500px'}
             loader={<div>Waiting for data...</div>}
