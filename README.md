@@ -7,6 +7,7 @@ Honestly, I use both. This also was an excuse for me to just fiddle around with 
 
 ## Roadmap
 * Learn to manipulate React in a "best-practice" way :laughing:
+  * Restructure project in an easy-to-understand and logical way
 * Add all meaningful visualizations (charts) to the dashboard
   * Response time over time
   * Sent/Received bytes over time
@@ -14,6 +15,7 @@ Honestly, I use both. This also was an excuse for me to just fiddle around with 
   * Synthesis report
   * Number of threads over time
   * Error viewer
+* Add error handling
 * Add auto-refresh
 * Add support for alerts
 * Add multi-tenancy support

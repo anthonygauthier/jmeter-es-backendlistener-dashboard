@@ -15,8 +15,8 @@ class App extends Component {
     this.state = {
       esHost: 'localhost',
       esPort: 9200,
-      timeFrom: 0,
-      timeTo: 0,
+      timeFrom: '2018-10-12T10:50',
+      timeTo: '2018-10-12T11:50',
       linearDataSource: null,
       tableDataSource: null,
       index: ''
@@ -108,6 +108,7 @@ class App extends Component {
                     label="From"
                     type="datetime-local"
                     onChange={this.handleChange}
+                    defaultValue="2018-10-12T10:50"
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -116,6 +117,7 @@ class App extends Component {
                     name="timeTo"
                     label="To"
                     type="datetime-local"
+                    defaultValue="2018-10-12T11:00"
                     onChange={this.handleChange}
                     InputLabelProps={{
                       shrink: true,
@@ -129,10 +131,10 @@ class App extends Component {
         </div>
         <div id="charts">
           <Chart
-            chartType="Line"
+            chartType="LineChart"
             width={'100%'}
             height={'500px'}
-            loader={<div>Loading percentile distribution...</div>}
+            loader={<div>Waiting for data...</div>}
             data={this.state.linearDataSource}
             options={{
               hAxis: {
@@ -141,6 +143,8 @@ class App extends Component {
               vAxis: {
                 title: 'Response time',
               },
+              title: `Response time percentile distribution for ${this.state.index}`,
+              subtitle: 'Time is in milliseconds (ms)',
               chart: {
                 title: `Response time percentile distribution for ${this.state.index}`,
                 subtitle: 'Time is in milliseconds (ms)',

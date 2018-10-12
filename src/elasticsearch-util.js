@@ -10,7 +10,6 @@ export class ESUtils {
   }
 
   async getPercentiles(index, timeFrom, timeTo) {
-    console.log(timeFrom, timeTo);
     const response = await this.client.search({
       index: index,
       body: {
@@ -18,7 +17,6 @@ export class ESUtils {
           "transaction": {
             terms: {
               field: "SampleLabel.keyword",
-              size: 200,
               order: {
                 _key: "desc"
               }
@@ -51,6 +49,29 @@ export class ESUtils {
       }
     });
 
+    return response;
+  }
+
+  async getDocuments(index, timeFrom, timeTo) {
+    const response = await this.client.search({
+      index: index,
+      body: {
+        query: {
+          bool: {
+            must: [{
+              range: {
+                Timestamp: {
+                  gte: timeFrom,
+                  lte: timeTo,
+                  format: "epoch_millis"
+                }
+              }
+            }]
+          }
+        }
+      }
+    });
+    console.log(response);
     return response;
   }
 }

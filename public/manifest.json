@@ -1,6 +1,6 @@
 {
-  "short_name": "JMeter ES Percentile",
-  "name": "JMeter ElasticSearch Percentile Graph Generator",
+  "short_name": "JMeter ES Dashboard",
+  "name": "JMeter ElasticSearch Dashboard",
   "icons": [
     {
       "src": "favicon.ico",
