@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ESUtils } from './elasticsearch-util';
 import { Chart } from "react-google-charts";
+import { DateTime } from 'react-datetime'
 import './App.css';
 
 class App extends Component {
@@ -11,7 +12,7 @@ class App extends Component {
       esPort: 9200,
       timeFrom: 0,
       timeTo: 0,
-      chartData: null,
+      linearDataSource: null,
       index: ''
     };
 
@@ -19,9 +20,8 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  generateDataSource(esData) {
+  generateLinearDataSource(esData) {
     let array = [["x"]];
-
     // create a Data Source that works with Google Charts
     for(let i=0; i < esData.aggregations.transaction.buckets.length; i++) {
       array[0].push(esData.aggregations.transaction.buckets[i].key)
@@ -33,7 +33,6 @@ class App extends Component {
         array[j+1].push(esData.aggregations.transaction.buckets[i].percentiles.values[j].value);
       }
     }
-
     return array;
   }
 
@@ -41,8 +40,8 @@ class App extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  handleChartData(source) {
-    this.setState({chartData: source});
+  handledataSource(name, value) {
+    this.setState({[name]: value});
   }
 
   async handleSubmit(event) {
@@ -52,7 +51,7 @@ class App extends Component {
     try {
       if(await es.checkConnectivity()) {
         const response = await es.getPercentiles(this.state.index, this.state.timeFrom * 1000, this.state.timeTo * 1000);
-        this.handleChartData(this.generateDataSource(response));
+        this.handledataSource('linearDataSource', this.generateLinearDataSource(response));
       }
     } catch (e) {
       console.trace(e);
@@ -77,11 +76,11 @@ class App extends Component {
         <div id="charts">
           <Chart
             chartType="LineChart"
-            data={this.state.chartData}
+            loader={<div>Loading percentile distribution...</div>}
+            data={this.state.linearDataSource}
             options={{
               chartArea: {
-                width: '50%',
-                height: '10em'
+                width: '80%',
               },
               hAxis: {
                 title: 'Percentile',
@@ -91,7 +90,6 @@ class App extends Component {
               },
               title: `Response time percentile distribution for ${this.state.index}`,
             }}
-            rootProps={{ 'data-testid': '1' }}
           />
         </div>
       </div>
