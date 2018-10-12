@@ -108,7 +108,6 @@ class App extends Component {
                     label="From"
                     type="datetime-local"
                     onChange={this.handleChange}
-                    defaultValue="2018-10-12T10:50"
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -117,7 +116,6 @@ class App extends Component {
                     name="timeTo"
                     label="To"
                     type="datetime-local"
-                    defaultValue="2018-10-12T11:00"
                     onChange={this.handleChange}
                     InputLabelProps={{
                       shrink: true,
