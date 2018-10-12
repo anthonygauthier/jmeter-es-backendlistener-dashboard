@@ -15,8 +15,8 @@ class App extends Component {
     this.state = {
       esHost: 'localhost',
       esPort: 9200,
-      timeFrom: '2018-10-12T10:50',
-      timeTo: '2018-10-12T11:50',
+      timeFrom: 0,
+      timeTo: 0,
       linearDataSource: null,
       tableDataSource: null,
       index: ''
@@ -131,7 +131,7 @@ class App extends Component {
         </div>
         <div id="charts">
           <Chart
-            chartType="LineChart"
+            chartType="Chart"
             width={'100%'}
             height={'500px'}
             loader={<div>Waiting for data...</div>}
@@ -141,7 +141,7 @@ class App extends Component {
                 title: 'Percentile',
               },
               vAxis: {
-                title: 'Response time',
+                title: 'Response time (ms)',
               },
               title: `Response time percentile distribution for ${this.state.index}`,
               subtitle: 'Time is in milliseconds (ms)',
