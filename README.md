@@ -6,7 +6,7 @@
 Honestly, I use both. This also was an excuse for me to just fiddle around with React and Google Charts :smile: ! But seriously, there are some limitations into what you can achieve in Grafana and Kibana to visualize the results when using the ES Backend Listener. The funny thing is that the limitations are different in both solutions. I decided to create this to overcome these limitations.
 
 ## Roadmap
-* Learn to manipulate React in a "best-practice" way :laugh:
+* Learn to manipulate React in a "best-practice" way :laughing:
 * Add all meaningful visualizations (charts) to the dashboard
   * Response time over time
   * Sent/Received bytes over time
