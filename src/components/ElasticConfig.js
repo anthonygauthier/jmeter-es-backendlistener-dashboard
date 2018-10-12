@@ -3,7 +3,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Input from '@material-ui/core/Input';
 
-export class ElasticConfig extends Component {
+class ElasticConfig extends Component {
   constructor(props) {
     super(props);
     this.state = {

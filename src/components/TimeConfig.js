@@ -3,7 +3,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import TextField from '@material-ui/core/TextField';
 
-export class TimeConfig extends Component {
+class TimeConfig extends Component {
   constructor(props) {
     super(props);
     this.state = {

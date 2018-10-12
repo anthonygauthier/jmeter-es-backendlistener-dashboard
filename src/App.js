@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { ESUtils } from './utils/elasticsearch';
 import { ChartUtils } from './utils/charts';
-import { Chart } from "react-google-charts";
-import { ElasticConfig } from './components/ElasticConfig';
-import { TimeConfig } from './components/TimeConfig';
+import ElasticConfig from './components/ElasticConfig';
+import TimeConfig from './components/TimeConfig';
+import LinearChart from './components/LinearChart';
+import DataTable from './components/DataTable';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import './App.css';
@@ -69,35 +70,14 @@ class App extends Component {
           </form>
         </div>
         <div id="charts">
-          <Chart
-            chartType="Line"
-            width={'100%'}
-            height={'500px'}
-            loader={<div>Waiting for data...</div>}
-            data={this.state.linearDataSource}
-            options={{
-              hAxis: {
-                title: 'Percentile',
-              },
-              vAxis: {
-                title: 'Response time (ms)',
-              },
-              title: `Response time percentile distribution for ${this.state.index}`,
-              subtitle: 'Time is in milliseconds (ms)',
-              chart: {
-                title: `Response time percentile distribution for ${this.state.index}`,
-                subtitle: 'Time is in milliseconds (ms)',
-              },
-              
-            }}
+          <LinearChart 
+            title={(this.state.index !== undefined) && `Percentile distribution for index "${this.state.index}"`}
+            subtitle={(this.state.index !== undefined) && 'Response time in millisecond (ms)'}
+            xAxisLegend="Percentile"
+            yAxisLegend="Response time"
+            dataSource={this.state.linearDataSource}
           />
-          <Chart
-            width={'100%'}
-            height={'500px'}
-            chartType="Table"
-            loader={<div>Loading percentile data table</div>}
-            data={this.state.tableDataSource}
-          />
+          <DataTable dataSource={this.state.tableDataSource} />
         </div>
       </div>
     );
