@@ -13,6 +13,7 @@ class App extends Component {
       timeFrom: 0,
       timeTo: 0,
       linearDataSource: null,
+      tableDataSource: null,
       index: ''
     };
 
@@ -22,7 +23,7 @@ class App extends Component {
 
   generateLinearDataSource(esData) {
     let array = [["x"]];
-    // create a Data Source that works with Google Charts
+
     for(let i=0; i < esData.aggregations.transaction.buckets.length; i++) {
       array[0].push(esData.aggregations.transaction.buckets[i].key)
       for(let j=0; j < esData.aggregations.transaction.buckets[0].percentiles.values.length; j++) {
@@ -36,11 +37,28 @@ class App extends Component {
     return array;
   }
 
+  generateTableDataSource(esData) {
+    let array = [[{type: 'string', label: 'Transaction'}]];
+    
+    for(let i=0; i < esData.aggregations.transaction.buckets.length; i++) {
+      const transaction = esData.aggregations.transaction.buckets[i];
+      for(let j=0; j < transaction.percentiles.values.length; j++) {
+        const percentile = transaction.percentiles.values[j];
+        if(j===0)
+          array.push([transaction.key]);
+        if(i===0)
+          array[0].push({type: 'number', label: percentile.key});
+        array[i+1].push(percentile.value)
+      }
+    }
+    return array;
+  }
+
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  handledataSource(name, value) {
+  handleDataSource(name, value) {
     this.setState({[name]: value});
   }
 
@@ -51,7 +69,8 @@ class App extends Component {
     try {
       if(await es.checkConnectivity()) {
         const response = await es.getPercentiles(this.state.index, this.state.timeFrom * 1000, this.state.timeTo * 1000);
-        this.handledataSource('linearDataSource', this.generateLinearDataSource(response));
+        this.handleDataSource('linearDataSource', this.generateLinearDataSource(response));
+        this.handleDataSource('tableDataSource', this.generateTableDataSource(response));
       }
     } catch (e) {
       console.trace(e);
@@ -90,6 +109,13 @@ class App extends Component {
               },
               title: `Response time percentile distribution for ${this.state.index}`,
             }}
+          />
+          <Chart
+            width={'100%'}
+            height={'500px'}
+            chartType="Table"
+            loader={<div>Loading percentile data table</div>}
+            data={this.state.tableDataSource}
           />
         </div>
       </div>
