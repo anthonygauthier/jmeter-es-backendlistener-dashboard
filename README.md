@@ -22,6 +22,12 @@ Honestly, I use both. This also was an excuse for me to just fiddle around with 
   * Login system
   * Permissions system
     * Restrictions to certain indices
+    
+## How to install
+
+1. Clone the repository : ```git clone https://github.com/delirius325/jmeter-es-backendlistener-dashboard.git```
+2. Open the folder in your favorite text editor
+3. Start the app : ```yarn start```
 
 ## Contributing
 Do not hesitate to contribute, all help is welcomed. If you don't want to commit code per say, but have some helpful critical feedback about project/code structure - just create an issue explaining the whole thing :smile:!
