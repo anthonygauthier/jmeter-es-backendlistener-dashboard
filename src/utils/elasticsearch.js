@@ -9,8 +9,15 @@ export class ESUtils {
     return await this.client.ping({ requestTimeout: 3000 });
   }
 
+  async retrieveAll(callback, data) {
+    let esDocFrom = 0;
+    while(data.hits.total >= esDocFrom) {
+
+    }
+  }
+
   async getPercentiles(index, timeFrom, timeTo) {
-    const response = await this.client.search({
+    return await this.client.search({
       index: index,
       body: {
         aggs: {
@@ -48,30 +55,28 @@ export class ESUtils {
         }
       }
     });
-
-    return response;
   }
 
-  async getDocuments(index, timeFrom, timeTo) {
-    const response = await this.client.search({
+  async getDocuments(index, timeFrom, timeTo, from=0) {
+    return await this.client.search({
       index: index,
       body: {
+        from: from,
+        size: 500,
         query: {
-          bool: {
-            must: [{
-              range: {
-                Timestamp: {
-                  gte: timeFrom,
-                  lte: timeTo,
-                  format: "epoch_millis"
+            bool: {
+              must: [{
+                range: {
+                  Timestamp: {
+                    gte: timeFrom,
+                    lte: timeTo,
+                    format: "epoch_millis"
+                  }
                 }
-              }
-            }]
+              }]
           }
         }
       }
     });
-    console.log(response);
-    return response;
   }
 }
