@@ -1,5 +1,8 @@
 # JMeter-ElasticSearch-BackendListener-Dashboard
 
+### Supporting the author
+[![patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/bePatron?u=17797269)
+
 #### *** This is still a work in progress - updated very frequently ***
 
 ## Why not simply use Grafana or Kibana?
