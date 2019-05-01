@@ -1,9 +1,7 @@
-# JMeter-ElasticSearch-BackendListener-Dashboard
+## JMeter-ElasticSearch-BackendListener-Dashboard
 
-### Supporting the author
-[![patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/bePatron?u=17797269)
+# This project is on hold -- there won't be updates for a while
 
-#### *** This is still a work in progress - updated very frequently ***
 
 ## Why not simply use Grafana or Kibana?
 Honestly, I use both. This also was an excuse for me to just fiddle around with React and Google Charts :smile: ! But seriously, there are some limitations into what you can achieve in Grafana and Kibana to visualize the results when using the ES Backend Listener. The funny thing is that the limitations are different in both solutions. I decided to create this to overcome these limitations.
